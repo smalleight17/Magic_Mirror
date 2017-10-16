@@ -11,16 +11,16 @@ void ofApp::setup()
 	//darknet.init(cfgfile1, weightfile1, namesfile1);
 
 	/***** 4 custom objects*****/
-	//string cfgfile2 = ofToDataPath("4_obj/custom_obj.cfg");
-	//string weightfile2 = ofToDataPath("4_obj/custom_obj.weights");
-	//string namesfile2 = ofToDataPath("4_obj/custom_obj.names");
-	//custom_darknet.init(cfgfile2, weightfile2, namesfile2);
+	string cfgfile2 = ofToDataPath("4_obj/custom_obj.cfg");
+	string weightfile2 = ofToDataPath("4_obj/custom_obj.weights");
+	string namesfile2 = ofToDataPath("4_obj/custom_obj.names");
+	custom_darknet.init(cfgfile2, weightfile2, namesfile2);
 
 	/***** 23 objects ******/
-	string cfgfile1 = ofToDataPath("cfg/yolo-voc.2.0-custom.cfg");
+	/*string cfgfile1 = ofToDataPath("cfg/yolo-voc.2.0-custom.cfg");
 	string weightfile1 = ofToDataPath("yolo-voc_3000.weights");
 	string namesfile1 = ofToDataPath("cfg/voc.names");
-	darknet.init(cfgfile1, weightfile1, namesfile1);
+	darknet.init(cfgfile1, weightfile1, namesfile1);*/
 
 
 	video.setDeviceID(0);
@@ -48,13 +48,12 @@ void ofApp::update()
 
 void ofApp::draw()
 {
-
 	ofSetColor(255);
 	video.draw(0, 0);
 
 	if (video.isFrameNew()) {
 		vector< detected_object > detections = darknet.yolo(video.getPixels(), thresh, maxOverlap);
-		ofNoFill();
+		ofPoint rect_center; 
 
 		for (detected_object d : detections) {
 			ofSetColor(d.color);
@@ -63,7 +62,7 @@ void ofApp::draw()
 			ofDrawRectangle(d.rect);
 			ofDrawBitmapStringHighlight(d.label + ": " + ofToString(d.probability), d.rect.x, d.rect.y + 20);
 
-			ofPoint rect_center = d.rect.getCenter();
+			rect_center = d.rect.getCenter();
 			ofFill();
 			ofCircle(rect_center, 8);
 		}
@@ -79,7 +78,7 @@ void ofApp::draw()
 				stable_count = 0;
 				last_frame_object = current_frame_object;
 			}
-			if (stable_count == 10)	osc_sendMsg(current_frame_object);
+			if (stable_count >= 15)	osc_sendMsg(current_frame_object, rect_center.x);
 
 		}
 		else {
@@ -88,8 +87,8 @@ void ofApp::draw()
 			lose_object_count++;
 
 			//if the camera loses the object for more than 10 frames, than we're sure it's not there
-			if (lose_object_count == 10) {
-				osc_sendMsg("stop");
+			if (lose_object_count == 15) {
+				osc_sendMsg("stop", 0.);
 				stable_count = 0;
 				last_frame_object = "";
 			}
@@ -101,7 +100,7 @@ void ofApp::draw()
 	ofDrawBitmapStringHighlight("detect_threshold: " + ofToString(thresh), 660, 100);
 	ofDrawBitmapStringHighlight("fps: " + ofToString(ofGetFrameRate()), 900, 700);
 }
-void ofApp::osc_sendMsg(string object) {
+void ofApp::osc_sendMsg(string object, float pos_x) {
 	ofxOscMessage m;
 	if (object == "stop") {
 		m.setAddress("/stop_shader");
@@ -112,6 +111,7 @@ void ofApp::osc_sendMsg(string object) {
 	else {
 		m.setAddress("/start_shader");
 		m.addStringArg(object);
+		m.addFloatArg(pos_x);
 		load_shader = true;
 		cout << "start shader: " << object << "\t" + ofToString(ofGetFrameNum()) << endl;
 	}

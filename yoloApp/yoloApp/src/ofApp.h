@@ -14,7 +14,7 @@ public:
 	void setup();
 	void update();
 	void draw();
-	void osc_sendMsg(string object);
+	void osc_sendMsg(string object, float pos_x);
 
 	ofxDarknet darknet;
 	ofxDarknet custom_darknet;

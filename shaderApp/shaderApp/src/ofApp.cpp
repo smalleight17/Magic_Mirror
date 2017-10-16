@@ -20,13 +20,17 @@ void ofApp::update(){
 		if (m.getAddress() == "/start_shader") {
 			current_object = m.getArgAsString(0);
 			pos_x = m.getArgAsFloat(1);
-			//cout << current_object << "\t" + ofToString(ofGetFrameNum()) << endl;
+			pos_x = ofMap(pos_x, 0, 640, 1680, 0) - 20;
 			
-			load_shader(current_object);
+			if (load_shader_bool) {
+				load_shader(current_object);
+				load_shader_bool = false;
+			}
 			running_shader = true;
 		}
 		else {
 			running_shader = false;
+			load_shader_bool = true;
 		}
 	}
 }
@@ -38,11 +42,7 @@ void ofApp::draw(){
 
 	if (running_shader) {
 		if (current_object == "ALADDIN'S_LAMP") {
-
 			run_genie_shader();
-			ofFill();
-			ofSetColor(ofColor::white);
-			ofDrawCircle(pos_x, 100, 10);
 		}
 		if (current_object == "FAKE_LOVE") {
 			run_FL_shader();
@@ -52,6 +52,9 @@ void ofApp::draw(){
 		}
 	}
 	ofDrawBitmapStringHighlight(ofToString(ofGetFrameRate()), 20 , 20);
+	ofFill();
+	ofSetColor(ofColor::white);
+	ofDrawCircle(pos_x, 800, 200);
 }
 
 
@@ -95,12 +98,6 @@ void ofApp::load_shader(string object) {
 		shader.load("shader/spaceship/galaxy");
 		baseImg.loadImage("image/universe.png");
 	}
-
-	/*
-	if (object == "starfish") {
-	baseImg.loadImage("image/optical_illusion.jpg");
-	}
-	*/
 }
 
 void ofApp::run_umbrella_shader() {
@@ -121,7 +118,8 @@ void ofApp::run_genie_shader() {
 	ofBackground(ofColor::black);
 	float current_time = ofGetElapsedTimef() - start_time;
 
-	//cout << ofToString(ofClamp((sin(current_time / 2) + 0.7), -0.3, 1))  << endl;
+	cout << ofToString(current_time)  << endl;
+
 	shader.begin();
 	shader.setUniform1f("u_time", current_time);
 	shader.setUniform2f("windowSize", ofGetWidth(), ofGetHeight());
@@ -201,7 +199,7 @@ void ofApp::run_space_shader() {
 	shader.begin();
 	float current_time = ofGetElapsedTimef() - start_time;
 
-	//cout << "current_time: " << ofToString(current_time /20.) << endl;
+	cout << "current_time: " << ofToString(current_time ) << endl;
 
 	shader.setUniform1f("current_time", current_time);
 	shader.setUniform2f("resolution", ofGetWidth(), ofGetHeight());

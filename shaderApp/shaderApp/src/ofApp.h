@@ -25,6 +25,7 @@ class ofApp : public ofBaseApp{
 		ofImage noiseImg;
 		ofFbo bufferFBO, rotateFBO;
 		bool running_shader;
+		bool load_shader_bool = true;
 		string current_object;
 		float pos_x;
 		float particle_time = 0;
