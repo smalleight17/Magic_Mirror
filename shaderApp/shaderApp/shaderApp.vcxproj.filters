@@ -1,0 +1,227 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="src\ofApp.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\addons\ofxOsc\src\ofxOscBundle.cpp">
+      <Filter>addons\ofxOsc\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\addons\ofxOsc\src\ofxOscMessage.cpp">
+      <Filter>addons\ofxOsc\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\addons\ofxOsc\src\ofxOscParameterSync.cpp">
+      <Filter>addons\ofxOsc\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\addons\ofxOsc\src\ofxOscReceiver.cpp">
+      <Filter>addons\ofxOsc\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\addons\ofxOsc\src\ofxOscSender.cpp">
+      <Filter>addons\ofxOsc\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\addons\ofxOsc\libs\oscpack\src\ip\IpEndpointName.cpp">
+      <Filter>addons\ofxOsc\libs\oscpack\src\ip</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\addons\ofxOsc\libs\oscpack\src\ip\win32\NetworkingUtils.cpp">
+      <Filter>addons\ofxOsc\libs\oscpack\src\ip\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\addons\ofxOsc\libs\oscpack\src\ip\win32\UdpSocket.cpp">
+      <Filter>addons\ofxOsc\libs\oscpack\src\ip\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscOutboundPacketStream.cpp">
+      <Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscPrintReceivedElements.cpp">
+      <Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscReceivedElements.cpp">
+      <Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscTypes.cpp">
+      <Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\addons\ofxCurlNoise\src\CurlNoise.cpp">
+      <Filter>addons\ofxCurlNoise\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\addons\ofxCurlNoise\src\ofxCurlNoise.cpp">
+      <Filter>addons\ofxCurlNoise\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\addons\ofxCurlNoise\src\ParticleEmitter.cpp">
+      <Filter>addons\ofxCurlNoise\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\addons\ofxCurlNoise\src\ParticleManager.cpp">
+      <Filter>addons\ofxCurlNoise\src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{d8376475-7454-4a24-b08a-aac121d3ad6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons">
+      <UniqueIdentifier>{c831fc9e-1a63-4953-9a23-003c1c4b76af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxOsc">
+      <UniqueIdentifier>{450e25d7-3f23-4ea5-a3fa-cc9aa1c03fb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxOsc\src">
+      <UniqueIdentifier>{15cfecef-d9ef-4a07-8f1b-2830c62908db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxOsc\libs">
+      <UniqueIdentifier>{b1286689-2590-40b1-b7f3-bfb1fe31a152}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxOsc\libs\oscpack">
+      <UniqueIdentifier>{59db2143-5e89-4fea-80e0-27e6f2754f78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxOsc\libs\oscpack\src">
+      <UniqueIdentifier>{0a6b5add-3367-4ba7-8c87-e29caa937bd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxOsc\libs\oscpack\src\ip">
+      <UniqueIdentifier>{4d7c8885-d00c-42a9-b456-c963d9bd2b0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxOsc\libs\oscpack\src\ip\win32">
+      <UniqueIdentifier>{25c32bb0-5a0f-48b2-98ff-f315fd71cb6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxOsc\libs\oscpack\src\osc">
+      <UniqueIdentifier>{8b241d28-9d4f-4c6a-9e3d-5c5813185b25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shader">
+      <UniqueIdentifier>{137b3b77-9a74-464d-946a-b94b21dca3c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shader\umbrella">
+      <UniqueIdentifier>{f46310c8-f0c7-4845-8ff5-664c15d40b80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shader\galaxy">
+      <UniqueIdentifier>{be5511b1-002c-42f8-a66b-3d782d42282c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shader\genie">
+      <UniqueIdentifier>{69e9e4d2-8b73-42f7-8a70-70654f9dc4ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shader\FakeLove">
+      <UniqueIdentifier>{cfeda847-709f-40a2-86d1-059e4172bcf5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shader\heartBeat">
+      <UniqueIdentifier>{aeeb51d4-f08d-470b-805e-49aeadadc960}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxCurlNoise">
+      <UniqueIdentifier>{c9ca000d-5d72-488d-8615-7bcc1d5877df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxCurlNoise\src">
+      <UniqueIdentifier>{4b8fdbdf-8bac-4074-9f78-3a72e50bdff2}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\ofApp.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\addons\ofxOsc\src\ofxOsc.h">
+      <Filter>addons\ofxOsc\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\addons\ofxOsc\src\ofxOscArg.h">
+      <Filter>addons\ofxOsc\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\addons\ofxOsc\src\ofxOscBundle.h">
+      <Filter>addons\ofxOsc\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\addons\ofxOsc\src\ofxOscMessage.h">
+      <Filter>addons\ofxOsc\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\addons\ofxOsc\src\ofxOscParameterSync.h">
+      <Filter>addons\ofxOsc\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\addons\ofxOsc\src\ofxOscReceiver.h">
+      <Filter>addons\ofxOsc\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\addons\ofxOsc\src\ofxOscSender.h">
+      <Filter>addons\ofxOsc\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\addons\ofxOsc\libs\oscpack\src\ip\IpEndpointName.h">
+      <Filter>addons\ofxOsc\libs\oscpack\src\ip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\addons\ofxOsc\libs\oscpack\src\ip\NetworkingUtils.h">
+      <Filter>addons\ofxOsc\libs\oscpack\src\ip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\addons\ofxOsc\libs\oscpack\src\ip\PacketListener.h">
+      <Filter>addons\ofxOsc\libs\oscpack\src\ip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\addons\ofxOsc\libs\oscpack\src\ip\TimerListener.h">
+      <Filter>addons\ofxOsc\libs\oscpack\src\ip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\addons\ofxOsc\libs\oscpack\src\ip\UdpSocket.h">
+      <Filter>addons\ofxOsc\libs\oscpack\src\ip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\addons\ofxOsc\libs\oscpack\src\osc\MessageMappingOscPacketListener.h">
+      <Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscException.h">
+      <Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscHostEndianness.h">
+      <Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscOutboundPacketStream.h">
+      <Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscPacketListener.h">
+      <Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscPrintReceivedElements.h">
+      <Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscReceivedElements.h">
+      <Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscTypes.h">
+      <Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\addons\ofxCurlNoise\src\CurlNoise.h">
+      <Filter>addons\ofxCurlNoise\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\addons\ofxCurlNoise\src\ofxCurlNoise.h">
+      <Filter>addons\ofxCurlNoise\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\addons\ofxCurlNoise\src\ParticleEmitter.h">
+      <Filter>addons\ofxCurlNoise\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\addons\ofxCurlNoise\src\ParticleManager.h">
+      <Filter>addons\ofxCurlNoise\src</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="icon.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\data\shader\umbrella\rain_effect.frag">
+      <Filter>shader\umbrella</Filter>
+    </None>
+    <None Include="bin\data\shader\umbrella\rain_effect.vert">
+      <Filter>shader\umbrella</Filter>
+    </None>
+    <None Include="bin\data\shader\spaceship\galaxy.frag">
+      <Filter>shader\galaxy</Filter>
+    </None>
+    <None Include="bin\data\shader\spaceship\galaxy.vert">
+      <Filter>shader\galaxy</Filter>
+    </None>
+    <None Include="bin\data\shader\genie\genie.frag">
+      <Filter>shader\genie</Filter>
+    </None>
+    <None Include="bin\data\shader\genie\genie.vert">
+      <Filter>shader\genie</Filter>
+    </None>
+    <None Include="bin\data\shader\FakeLove\FakeLove.frag">
+      <Filter>shader\FakeLove</Filter>
+    </None>
+    <None Include="bin\data\shader\FakeLove\FakeLove.vert">
+      <Filter>shader\FakeLove</Filter>
+    </None>
+    <None Include="bin\data\shader\heartBeat\heartBeat.frag">
+      <Filter>shader\heartBeat</Filter>
+    </None>
+    <None Include="bin\data\shader\heartBeat\heartBeat.vert">
+      <Filter>shader\heartBeat</Filter>
+    </None>
+  </ItemGroup>
+</Project>
