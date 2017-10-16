@@ -14,7 +14,7 @@ void ofApp::setup()
 	string cfgfile2 = ofToDataPath("4_obj/custom_obj.cfg");
 	string weightfile2 = ofToDataPath("4_obj/custom_obj.weights");
 	string namesfile2 = ofToDataPath("4_obj/custom_obj.names");
-	custom_darknet.init(cfgfile2, weightfile2, namesfile2);
+	darknet.init(cfgfile2, weightfile2, namesfile2);
 
 	/***** 23 objects ******/
 	/*string cfgfile1 = ofToDataPath("cfg/yolo-voc.2.0-custom.cfg");
@@ -42,6 +42,7 @@ void ofApp::setup()
 void ofApp::update()
 {
 	video.update();
+
 	// detected objects with confidence < threshold are omitted
 	//thresh = ofMap(ofGetMouseX(), 0, ofGetWidth(), 0, 1);
 }

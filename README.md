@@ -5,6 +5,11 @@ Magic Mirror uses Yolo real-time object detection, shader and transparent LCD. W
 
 ## Yolo App
 
+### Dependencies
+* ofxDarknet
+* ofxOpenCV
+* ofxOsc
+
 ### How to configure Yolo on Windows and Visual Studio
 * Requires nVidia GPU and CUDA.
 * I used openFramework and [ofxDarknet](https://github.com/mrzl/ofxDarknet). Refer to the repo on setup.
@@ -20,4 +25,8 @@ Magic Mirror uses Yolo real-time object detection, shader and transparent LCD. W
 
 ## Shader App
 
-Put everything in the shader file under shaderApp/shaderApp/bin/data
+### Dependencies
+* ofxOsc
+* ofxCurlNoise
+
+Put everything in the shader folder under shaderApp/shaderApp/bin/data
