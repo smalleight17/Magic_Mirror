@@ -52,9 +52,11 @@ void ofApp::draw(){
 		}
 	}
 	ofDrawBitmapStringHighlight(ofToString(ofGetFrameRate()), 20 , 20);
+	/*
 	ofFill();
 	ofSetColor(ofColor::white);
 	ofDrawCircle(pos_x, 800, 200);
+	*/
 }
 
 
