@@ -1,15 +1,10 @@
 import asyncio
-#import requests
-import datetime
-import random
-
 import time
 import sys
 import os
 from urllib.request import urlopen, Request
 from urllib.error import HTTPError, URLError
 import http.client
-from pathlib import Path
 
 search_keyword = 'circle nature'
 keywords = ' high resolution'
@@ -90,7 +85,7 @@ def _images_get_all_items(page):
 url = 'https://www.google.com/search?q=' + search + keywords + '&espv=2&biw=1366&bih=667&site=webhp&source=lnms&tbm=isch&sa=X&ei=XosDVaCXD8TasATItgE&ved=0CAcQ_AUoAg'
 raw_html = (download_page(url))
 items = _images_get_all_items(raw_html)
-data_list = []
+index = 0
 
 print("Total Image Links = " + str(len(items)))
 print("\n")
@@ -112,14 +107,8 @@ def download_image(k, url):
 
         data = response.read()
         response.close()
-
-    # dir_list = os.listdir(DIR_PATH)
-    # print(os.path.abspath(DIR_PATH), len(dir_list))
-
-    # output_file = open(search_keyword+"/"+str(k)+".jpg",'wb')
-    # output_file.write(data)
-
-    # print("completed ====> "+str(k))
+        print("Successfully get data ====>", k)
+        return data
 
     except IOError as e:
         print("IOError on image " + str(k) + "\t" + str(e))
@@ -133,8 +122,21 @@ def download_image(k, url):
         print("URLError " + str(k))
         return 0
 
-    print ("Successfully get data", k)
-    return data
+    except http.client.IncompleteRead as e:
+        print("Incomplete Read " + str(k))
+        return 0
+
+
+def write_image_file(future):
+    global index
+    data = future.result()
+    if data != 0 :
+        output_file = open(search_keyword+"/"+str(index)+".jpg",'wb')
+        output_file.write(data)
+        print ("Callback function", index, "write to image")
+        index += 1
+    else:
+        print("Callback function", index, "error")
 
 
 async def main():
@@ -142,30 +144,21 @@ async def main():
 
     k = 0
     future_list = []
-    while (k < len(items)):
+    while k < len(items):
         future = loop.run_in_executor(None, download_image, k, items[k])
+        future.add_done_callback(write_image_file)
         future_list.append(future)
         k = k + 1
 
     k = 0
-    while (k < len(future_list)):
-        data = await future_list[k]
-        data_list.append(data)
+    while k < len(future_list):
+        await future_list[k]
         k = k + 1
 
 
 loop = asyncio.get_event_loop()
 loop.run_until_complete(main())
 
-print ("data_list len:", len(data_list))
-
-#write to folder
-i=0
-while (i < len(data_list)):
-    if (data_list[i] != 0):
-        output_file = open(search_keyword + "/" + str(i) + ".jpg", 'wb')
-        output_file.write(data_list[i])
-    i = i + 1
 
 t1 = time.time()
 print("Total time taken: ", t1 - t0)
