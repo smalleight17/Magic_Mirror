@@ -41,6 +41,7 @@ void ofApp::setup()
 
 void ofApp::update()
 {
+
 	video.update();
 
 	// detected objects with confidence < threshold are omitted
@@ -49,6 +50,7 @@ void ofApp::update()
 
 void ofApp::draw()
 {
+	
 	ofSetColor(255);
 	video.draw(0, 0);
 
@@ -61,11 +63,11 @@ void ofApp::draw()
 			glLineWidth(ofMap(d.probability, 0, 1, 0, 8));
 			ofNoFill();
 			ofDrawRectangle(d.rect);
-			ofDrawBitmapStringHighlight(d.label + ": " + ofToString(d.probability), d.rect.x, d.rect.y + 20);
+			ofDrawBitmapStringHighlight(d.label + ": " + ofToString(d.probability), d.rect.x, d.rect.y - 20);
 
 			rect_center = d.rect.getCenter();
-			ofFill();
-			ofCircle(rect_center, 8);
+			//ofFill();
+			//ofCircle(rect_center, 8);
 		}
 
 		if (detections.size() == 1) {
@@ -79,7 +81,7 @@ void ofApp::draw()
 				stable_count = 0;
 				last_frame_object = current_frame_object;
 			}
-			if (stable_count >= 15)	osc_sendMsg(current_frame_object, rect_center.x);
+			if (stable_count == 10)	osc_sendMsg(current_frame_object, rect_center.x);
 
 		}
 		else {
@@ -101,6 +103,7 @@ void ofApp::draw()
 	ofDrawBitmapStringHighlight("detect_threshold: " + ofToString(thresh), 660, 100);
 	ofDrawBitmapStringHighlight("fps: " + ofToString(ofGetFrameRate()), 900, 700);
 }
+
 void ofApp::osc_sendMsg(string object, float pos_x) {
 	ofxOscMessage m;
 	if (object == "stop") {

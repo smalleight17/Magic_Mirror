@@ -14,11 +14,11 @@ class ofApp : public ofBaseApp{
 		void update();
 		void draw();
 
-		void load_shader(string object);
-		void run_umbrella_shader();
-		void run_space_shader();
-		void run_genie_shader();
-		void run_FL_shader();
+		//void load_shader(string object);
+		//void run_umbrella_shader();
+		//void run_space_shader();
+		//void run_genie_shader();
+		//void run_FL_shader();
 
 		ofShader shader, shaderBuffer;
 		ofImage baseImg, baseImg2, baseImg3;

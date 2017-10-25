@@ -1,26 +1,17 @@
 import asyncio
+import argparse
 import time
 import sys
 import os
 from urllib.request import urlopen, Request
 from urllib.error import HTTPError, URLError
 import http.client
+from pythonosc import dispatcher
+from pythonosc import osc_server
 
-search_keyword = 'circle nature'
-keywords = ' high resolution'
-DIR_PATH = "./{}".format(search_keyword)
-
-try:
-    os.makedirs(search_keyword)
-except OSError as e:
-    if e.errno != 17:
-        raise
-    pass
-
-search = search_keyword.replace(' ', '%20')
-keywords = keywords.replace(' ', '%20')
-
-t0 = time.time()
+index = 0
+search_keyword = ''
+items = []
 
 
 # Downloading entire Web Document (Raw Page Content)
@@ -70,6 +61,7 @@ def _images_get_next_item(s):
 
 # Getting all links with the help of '_images_get_next_image'
 def _images_get_all_items(page):
+    global items
     items = []
     while True:
         item, end_content = _images_get_next_item(page)
@@ -81,22 +73,6 @@ def _images_get_all_items(page):
             page = page[end_content:]
     return items
 
-
-url = 'https://www.google.com/search?q=' + search + keywords + '&espv=2&biw=1366&bih=667&site=webhp&source=lnms&tbm=isch&sa=X&ei=XosDVaCXD8TasATItgE&ved=0CAcQ_AUoAg'
-raw_html = (download_page(url))
-items = _images_get_all_items(raw_html)
-index = 0
-
-print("Total Image Links = " + str(len(items)))
-print("\n")
-
-'''
-info = open('output.txt', 'a')
-info.write(search_keyword + ": " + str(items) + "\n\n\n")  # Write the title of the page
-info.close()
-'''
-
-print("Starting Download...")
 
 
 def download_image(k, url):
@@ -156,9 +132,47 @@ async def main():
         k = k + 1
 
 
-loop = asyncio.get_event_loop()
-loop.run_until_complete(main())
+def start_download(unused_addr, args, volume):
+    print("testing osc", args)
+
+    global search_keyword
+    search_keyword = args
+    # search_keyword = 'circle nature'
+
+    try:
+        os.makedirs(search_keyword)
+    except OSError as e:
+        if e.errno != 17:
+            raise
+        pass
+
+    search = search_keyword.replace('_', '%20')
+
+    url = 'https://www.google.com/search?q=' + search + '&espv=2&biw=1366&bih=667&site=webhp&source=lnms&tbm=isch&sa=X&ei=XosDVaCXD8TasATItgE&ved=0CAcQ_AUoAg'
+    raw_html = (download_page(url))
+    items = _images_get_all_items(raw_html)
+    print("Total Image Links = " + str(len(items)), "\n")
+    print("Starting Download...")
+
+    t0 = time.time()
+
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(main())
+
+    t1 = time.time()
+    print("Total time taken: ", t1 - t0)
 
 
-t1 = time.time()
-print("Total time taken: ", t1 - t0)
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--ip", default="127.0.0.1", help="The ip to listen on")
+    parser.add_argument("--port", type=int, default=12345, help="The port to listen on")
+    args = parser.parse_args()
+
+    dispatcher = dispatcher.Dispatcher()
+    dispatcher.map("/start_shader", start_download)
+
+    #server = osc_server.ThreadingOSCUDPServer((args.ip, args.port), dispatcher)
+    server = osc_server.OSCUDPServer((args.ip, args.port), dispatcher)
+    print("Serving on {}".format(server.server_address))
+    server.serve_forever()
