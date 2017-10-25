@@ -1,18 +1,18 @@
 import asyncio
-import argparse
 import time
 import sys
 import os
+import http.client
 from urllib.request import urlopen, Request
 from urllib.error import HTTPError, URLError
-import http.client
-from pythonosc import dispatcher
-from pythonosc import osc_server
+from pythonosc import dispatcher, osc_server, udp_client
 
 index = 0
 search_keyword = ''
 items = []
 
+# sending message to shaderApp
+client = udp_client.SimpleUDPClient('127.0.0.1', 5000)
 
 # Downloading entire Web Document (Raw Page Content)
 def download_page(url):
@@ -76,6 +76,7 @@ def _images_get_all_items(page):
 
 
 def download_image(k, url):
+
     try:
         req = Request(url, headers={
             "User-Agent": "Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.17 (KHTML, like Gecko) Chrome/24.0.1312.27 Safari/537.17"})
@@ -110,6 +111,9 @@ def write_image_file(future):
         output_file = open(search_keyword+"/"+str(index)+".jpg",'wb')
         output_file.write(data)
         print ("Callback function", index, "write to image")
+
+        if index == 0 :
+            client.send_message("/start_shader" , search_keyword)
         index += 1
     else:
         print("Callback function", index, "error")
@@ -133,9 +137,11 @@ async def main():
 
 
 def start_download(unused_addr, args, volume):
-    print("testing osc", args)
 
-    global search_keyword
+    print("Getting message. Object: ", args)
+
+    global search_keyword, index
+    index = 0
     search_keyword = args
     # search_keyword = 'circle nature'
 
@@ -151,7 +157,7 @@ def start_download(unused_addr, args, volume):
     url = 'https://www.google.com/search?q=' + search + '&espv=2&biw=1366&bih=667&site=webhp&source=lnms&tbm=isch&sa=X&ei=XosDVaCXD8TasATItgE&ved=0CAcQ_AUoAg'
     raw_html = (download_page(url))
     items = _images_get_all_items(raw_html)
-    print("Total Image Links = " + str(len(items)), "\n")
+    print("Total Image Links = " + str(len(items)))
     print("Starting Download...")
 
     t0 = time.time()
@@ -160,19 +166,18 @@ def start_download(unused_addr, args, volume):
     loop.run_until_complete(main())
 
     t1 = time.time()
-    print("Total time taken: ", t1 - t0)
+    print("Total time taken: ", t1 - t0, "\n")
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--ip", default="127.0.0.1", help="The ip to listen on")
-    parser.add_argument("--port", type=int, default=12345, help="The port to listen on")
-    args = parser.parse_args()
-
+    '''
+    # waiting for message from YoloApp
     dispatcher = dispatcher.Dispatcher()
     dispatcher.map("/start_shader", start_download)
 
-    #server = osc_server.ThreadingOSCUDPServer((args.ip, args.port), dispatcher)
-    server = osc_server.OSCUDPServer((args.ip, args.port), dispatcher)
+    server = osc_server.OSCUDPServer(('127.0.0.1', 3000), dispatcher)
     print("Serving on {}".format(server.server_address))
     server.serve_forever()
+    '''
+
+    start_download("", "MY_AIRPLANE", 300)

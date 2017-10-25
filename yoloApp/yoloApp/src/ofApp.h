@@ -5,7 +5,7 @@
 #include "ofxOsc.h"
 
 #define HOST "localhost"
-#define PORT 12345
+#define PORT 3000
 
 class ofApp : public ofBaseApp
 {
