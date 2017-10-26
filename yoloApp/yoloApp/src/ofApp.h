@@ -14,7 +14,9 @@ public:
 	void setup();
 	void update();
 	void draw();
+	void keyPressed(int key);
 	void osc_sendMsg(string object, float pos_x);
+	void reset();
 
 	ofxDarknet darknet;
 	ofxDarknet custom_darknet;

@@ -34,11 +34,19 @@ void ofApp::draw(){
 	if (running_shader) {
 		index = (ofGetFrameNum() - start_time) / 120;
 		
-		string filename = "../../../../pythonServer/" + current_object + "/" + ofToString(index) + ".jpg";
-		baseImg.loadImage(filename);
-		baseImg.draw(0, 0);
-		
-		
+		try {
+			string filename = "../../../../pythonServer/" + current_object + "/" + ofToString(index) + ".jpg";
+			baseImg.loadImage(filename);
+			baseImg.draw(0, 0);
+		}
+		catch (std::exception& e) {
+			cout << "Exception caught: " << e.what() << endl;
+		}
+		catch (std::runtime_error& e) {
+			cout << "Runtime error caught: " << e.what() << endl;
+
+		}
+
 	}
 
 }

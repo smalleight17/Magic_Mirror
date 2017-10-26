@@ -63,7 +63,7 @@ void ofApp::draw()
 			glLineWidth(ofMap(d.probability, 0, 1, 0, 8));
 			ofNoFill();
 			ofDrawRectangle(d.rect);
-			ofDrawBitmapStringHighlight(d.label + ": " + ofToString(d.probability), d.rect.x, d.rect.y - 20);
+			ofDrawBitmapStringHighlight(d.label + ": " + ofToString(d.probability), d.rect.x, d.rect.y + 20);
 
 			rect_center = d.rect.getCenter();
 			//ofFill();
@@ -121,4 +121,24 @@ void ofApp::osc_sendMsg(string object, float pos_x) {
 	}
 	sender.sendMessage(m);
 
+}
+
+void ofApp :: reset() {
+	stable_count = 0;
+	lose_object_count = 0;
+	current_frame_object = "";
+	last_frame_object = "";
+}
+
+// For Debugging
+void ofApp::keyPressed(int key){
+	if (key == 'r') {
+		reset();
+	}
+	if (key == 's') {
+		ofxOscMessage m;
+		m.setAddress("/stop_shader");
+		sender.sendMessage(m);
+		cout << "stop shader\t" + ofToString(ofGetFrameNum()) << endl;
+	}
 }
