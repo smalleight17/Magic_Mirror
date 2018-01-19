@@ -1,5 +1,5 @@
 var gridster;
-var widgets;
+var widgets = [];
 var count = 11;
 var imgIndex = 3;
 
@@ -9,18 +9,15 @@ $(function () {         //equivalant for $(document).ready(function() { ... });
         widget_base_dimensions: [100, 100]
     }).data('gridster');
 
-    widgets = [
-        ['<li></li>', 1, 2],
-        ['<li><img src="assets/images/3.jpg" width=300 height=492></img></li>', 3, 5],
-        ['<li></li>', 2, 1],
-        ['<li></li>', 1, 3],
-        ['<li></li>', 1, 3],
-        ['<li><img src="assets/images/2.jpg" width=200 height=414></img></li>', 2, 4],
-        ['<li></li>', 1, 1],
-        ['<li></li>', 2, 2],
-        ['<li></li>', 2, 1],
-        ['<li><img src="assets/images/1.jpg" width=200 height= 308></img></li>', 2, 3]
-    ];
+    for (var i=0; i< 20; i++){
+      var gridX = Math.floor(Math.random() * 3) + 1;
+      var gridY = Math.floor(Math.random() * 3) + 1;
+      var unit = ['<li></li>', gridX, gridY];
+      widgets.push(unit);
+    }
+    widgets.push(['<li><img src="assets/images/3.jpg" width=300></img></li>', 3, 5]);
+    widgets.push(['<li><img src="assets/images/2.jpg" width=200></img></li>', 2, 4]);
+    widgets.push(['<li><img src="assets/images/1.jpg" width=200></img></li>', 2, 3]);
 
     $.each(widgets, function (i, widget) {
         gridster.add_widget.apply(gridster, widget)
@@ -29,10 +26,11 @@ $(function () {         //equivalant for $(document).ready(function() { ... });
 
 function testOnClick(){
     gridster.remove_widget( $('.gridster li').eq(0));
-      
-    if (count++ % 2 == 0){
+ 
+    if (count++ % 3 == 0){
         //add a new image
         imgIndex = (imgIndex++)%9+1;
+       
         var newImg = document.createElement('img');
         var img_src = "assets/images/"+ imgIndex+".jpg";
         newImg.src = img_src;
@@ -41,143 +39,46 @@ function testOnClick(){
         //to calculate the aspect ratio
         var poll = setInterval(function () {
             if (newImg.naturalWidth) {
-                clearInterval(poll);
-
-            //console.log(img_src, newImg.width, newImg.height);
-            var ratio = newImg.height / newImg.width;
-            var randomNum = Math.floor(Math.random()* 2)+3;
-            var new_width = 100 * randomNum;
+              clearInterval(poll);
             
-            var new_widget = '<li><img src='+img_src+' width='+new_width+'></img></li>';
-            gridster.add_widget(new_widget, randomNum,Math.ceil(randomNum * ratio));
+              var ratio = newImg.height / newImg.width;
+              var randomNum = Math.floor(Math.random()* 2)+3;
+              var new_width = 100 * randomNum;  
+              newImg.width = new_width;
+
+              var li_el = document.createElement('li');
+              li_el.appendChild(newImg);
+
+              gridster.add_widget(li_el, randomNum,Math.ceil(randomNum * ratio));
+              //console.log(li_el);
             }
         }, 10); 
 
     }else{
-        //add a random size unit
-        var gridX = Math.floor(Math.random() * 3) + 2;
-        var gridY = Math.floor(Math.random() * 3) + 2;
+     //add a random size unit
+        var gridX = Math.floor(Math.random() * 2) + 2;
+        var gridY = Math.floor(Math.random() * 2) + 2;
         var li_el = document.createElement('li');
 
-        var shape;
-        if(gridX > gridY){
-          shape = getHorizontalShape();
-        } else if(gridX < gridY){
-          shape = getVerticalShape();
-        }else{
-          shape = getSquareShape();
-        }
-
-        //var shape = getRandomShape();
+        var shape = getSquareShape();
+        // if(gridX > gridY){
+        //   shape = getHorizontalShape();
+        // } else if(gridX < gridY){
+        //   shape = getVerticalShape();
+        // }else{
+        //   shape = getSquareShape();
+        // }
         li_el.appendChild(shape);
-        gridster.add_widget(li_el, gridX, gridY);
+        gridster.add_widget(li_el, gridX, gridX);
     }
 }
 
 /********************** small motion graphics from here ****************************/
-function getHorizontalShape(){
-    var randomNum = Math.floor(Math.random() * 2);
-      
-    switch(randomNum){
-      case 0:                 //circle, horizontal
-        var shape_left = new mojs.Shape({
-            shape: 'circle',
-            fill: 'none',
-            radius: 40,
-            stroke: 'white',
-            strokeWidth: {15: 10},
-            strokeDasharray: '100%',
-            strokeDashoffset:{'-100%':'0', easing:'sin.inout'},
-            angle: {0: -180},
-            left:'42%',
-            duration: 2000,
-            repeat: 5
-        }).play();
-        
-        var shape_right = new mojs.Shape({
-            shape: 'circle',
-            fill: 'none',
-            radius: 40,
-            stroke: 'white',
-            strokeWidth: {15: 10},
-            strokeDasharray: '100%',
-            strokeDashoffset:{'100%':'0', easing:'sin.inout'},
-            angle: {[-180]:0},
-            left:'58%',
-            duration: 2000,
-            repeat: 5
-        }).play();
-
-        var div_el = document.createElement('div');
-        div_el.appendChild(shape_left.el);
-        div_el.appendChild(shape_right.el);
-        return div_el;
-        break;
-
-      case 1:                 //line, horizontal
-          const shiftCurve = mojs.easing.path( 'M0,100 C50,100 50,100 50,50 C50,0 50,0 100,0' );
-          const scaleCurveBase = mojs.easing.path( 'M0,100 C21.3776817,95.8051376 50,77.3262711 50,-700 C50,80.1708527 76.6222458,93.9449005 100,100' );
-          const scaleCurve = (p) => { return 1 + scaleCurveBase(p); };
-          const nScaleCurve = (p) => { return 1 - scaleCurveBase(p)/10; };
-          
-          var shape = new mojs.Shape({
-            shape:        'rect',
-            fill:         { '#FFFFFF' : '#FFFFFF', curve: scaleCurve },
-            radius:       10,
-            rx:           3,
-            x:            { [-125] : 125, easing: shiftCurve },
-            scaleX:       { 1 : 1, curve: scaleCurve },
-            scaleY:       { 1 : 1, curve: nScaleCurve },
-            origin:       { '0 50%' : '100% 50%', easing: shiftCurve },
-            
-            isYoyo:       true,
-            duration:     1000,
-            repeat:       2
-          }).play();
-          return shape.el;
-          break;
-
-        default:break;
-      }
-
-}
-
-function getVerticalShape(){
-   var shape_left = new mojs.Shape({
-      shape:          'rect',
-      fill:           'white',
-      radiusX:        40,
-      radiusY:        8,
-      x:              30,
-      y:            {[-100]:100},  
-      isYoyo:         true,
-      duration:       2000,
-      repeat:         2 
-    }).play();
-
-    var shape_right = new mojs.Shape({
-      shape:          'rect',
-      fill:           'white',
-      radiusX:        40,
-      radiusY:        8,
-      left:           60,
-      y:            {[-100]:100},  
-      isYoyo:         true,
-      duration:       2000,
-      delay:          500,
-      repeat:         2 
-    }).play();
-   
-    var div_el = document.createElement('div');
-    div_el.appendChild(shape_left.el);
-    div_el.appendChild(shape_right.el);
-    return div_el;
-
-}
 
 function getSquareShape(){
-    var randomNum = Math.floor(Math.random() * 2);
-      
+    var randomNum = Math.floor(Math.random() * 7);
+    //var randomNum = 1;
+
     switch(randomNum){
       case 0:                   //rect, sauqre
          var shape = new mojs.Shape({
@@ -190,23 +91,233 @@ function getSquareShape(){
              strokeDashoffset:{'-100%':'100%'},
              angle: {0: 180},
              duration: 2000,
-             repeat: 2
+             repeat: 10
          }).play();
          return shape.el;
          break;
 
-      case 1:                 //rect, square
+      case 1:                 //rotating square
+         var outline = new mojs.Shape({
+            shape:          'rect',
+            fill:           'none',
+            stroke:         'white',
+            radius:         40,
+            strokeWidth:    10,
+            isShowStart:true
+          });
+        
+        var rect = new mojs.Shape({
+            shape:          'rect',
+            fill:           'white',
+            radius:         36,
+            radiusY: 36,
+            y: 0,
+          }).play();
+        
+        TweenMax.to(outline.el, 1, {rotation:180, delay:1 , repeat:-1, repeatDelay:1});
+        var svg_rect = rect.el.childNodes[0].childNodes[0];
+        TweenMax.to(svg_rect, 1, {height: 0, repeat:-1, repeatDelay:1});
+        
+        var div_el = document.createElement('div');
+        div_el.appendChild(outline.el);
+        div_el.appendChild(rect.el);
+
+        return div_el;
+        break;
+ 
+      case 2:                 //skew rect, square
+        var shape_left = new mojs.Shape({
+          shape:          'rect',
+          fill:           'white',
+          left: '20%',
+          radius:         10,
+          radiusY:      30,
+          isShowStart: true
+        });
+
+        var shape_right = new mojs.Shape({
+          shape:          'rect',
+          fill:           'white',
+          left: '40%',
+          radius:         10,
+          radiusY:      30,
+          isShowStart: true
+        });
+
+        TweenMax.to([shape_left.el, shape_right.el], 1, {skewX:"30deg"});
+        
+        var tl = new TimelineMax({repeat: -1});
+        tl.to([shape_left.el, shape_right.el], 1.5, {left:"+=100px", ease:Circ.easeout})
+          .to([shape_left.el, shape_right.el], 1.5, {left:"-=100px", ease:Circ.easeout, yoyo:true});
+
+        //TweenMax.to(shape_right.el, 1, {skewX:"30deg"});
+        //TweenMax.to(shape_right.el, 2, {left:"+=100px", repeat: -1, yoyo:true});
+           
+        var div_el = document.createElement('div');
+        div_el.appendChild(shape_left.el);
+        div_el.appendChild(shape_right.el);
+        return div_el;
+        break;
+
+      case 3:                 // 3 nested arc rotating
+
+       var circle1 = new mojs.Shape({
+        shape: 'circle',
+        fill: 'none',
+        stroke: 'white',
+        radius: 60,
+        strokeWidth:  10,
+        strokeDasharray: '50%',
+        strokeDashoffset: '0%',
+        angle:{0:-360},
+        //isShowStart: true
+        easing: 'linear.none',
+        duration: 2000,
+        repeat: 50
+       }).play();
+       
+      
+       var circle2 = new mojs.Shape({
+        shape: 'circle',
+        fill: 'none',
+        stroke: 'white',
+        radius: 40,
+        strokeWidth:  10,
+        strokeDasharray: '50%',
+        strokeDashoffset: '0%',
+        angle:{120:480},
+        //isShowStart: true
+        easing: 'linear.none',
+        duration: 1000,
+        repeat: 50
+       }).play();
+       
+      
+       var circle3 = new mojs.Shape({
+        shape: 'circle',
+        fill: 'none',
+        stroke: 'white',
+        radius: 20,
+        strokeWidth:  10,
+        strokeDasharray: '50%',
+        strokeDashoffset: '0%',
+        angle:{240:600},
+        //isShowStart: true
+        easing: 'linear.none',
+        duration: 2000,
+        repeat: 50
+       }).play();
+
+       var div_el = document.createElement('div');
+       div_el.appendChild(circle1.el);
+       div_el.appendChild(circle2.el);
+       div_el.appendChild(circle3.el);
+       return div_el;
+      break;
+
+
+      case 4:           //2 dashed circle rotating
+       var circle_out = new mojs.Shape({
+        shape: 'circle',
+        fill: 'none',
+        stroke: 'white',
+        radius: 60,
+        strokeWidth:  8,
+        strokeDasharray: '5%',
+        strokeDashoffset: '0%',
+        angle:{0:360},
+        //isShowStart: true
+        easing: 'linear.none',
+        duration: 4000,
+        repeat: 50
+      }).play();
+      
+      
+      var circle_in = new mojs.Shape({
+        shape: 'circle',
+        fill: 'none',
+        stroke: 'white',
+        radius: 45,
+        strokeWidth:  1,
+        strokeDasharray: '4%',
+        strokeDashoffset: '0%',
+        angle:{0:-360},
+        //isShowStart: true
+        easing: 'linear.none',
+        duration: 3000,
+        repeat: 50
+      }).play();
+ 
+      var div_el = document.createElement('div');
+      div_el.appendChild(circle_out.el);
+      div_el.appendChild(circle_in.el);
+      return div_el;
+      break;
+      
+      case 5:               // five rect up and down
+      var div_el = document.createElement('div');
+      for (var i=0; i< 5; i++){
+          var shape = new mojs.Shape({
+          shape:          'rect',
+          fill:           'white',
+          radiusX:        5,
+          radiusY:        30,
+          x:              -50 + i*25,
+          y:            {[-50]:50},  
+          isYoyo:         true,
+          duration:       1000,
+          easing: 'sin.inout',
+          repeat:         20,
+          delay: i*100,
+          isShowStart: true
+        }).play();
+         div_el.appendChild(shape.el);
+      }
+      return div_el;
+      break;
+
+      case 6:             // line with circle on both end
          var shape = new mojs.Shape({
            shape:          'rect',
-           fill:           'none',
-           stroke:         'white',
-           radius:         40,
-           strokeWidth:    {30: 0, easing:'sin.in'},
-           angle:          { [-180] : 0 },
+           fill:           'white',
+           radiusX:        2,
+           radiusY:      100, 
+           scaleY:        {0: 1},
+           top: '10%',
+           y: {0: 100},
            duration:       1000,
-           repeat: 2 
          }).play();
-         return shape.el;
+         
+         var circle_top = new mojs.Shape({
+           shape: 'circle',
+           fill: 'white',
+           radius: 8,
+           y: {0:200},
+           top: '10%',
+           delay: 1000,
+           duration: 1000,
+           isShowStart: true
+         }).play();
+         
+         var circle_bottom = new mojs.Shape({
+           shape: 'circle',
+           fill: 'white',
+           radius: 8,
+           top: '10%',
+           y: {0:200},
+           //delay: 1000,
+           duration: 1000,
+           isShowStart: true
+         }).play();
+         var div_el = document.createElement('div');
+         
+         div_el.appendChild(shape.el);
+         div_el.appendChild(circle_top.el);
+         div_el.appendChild(circle_bottom.el);
+    
+         TweenMax.to(shape.el, 1, {delay:1, scaleY: 0, y:200});
+         TweenMax.to(div_el, 1, {opacity:0, delay: 2});
+         return div_el;
          break;
 
       default: break;

@@ -3,6 +3,7 @@ TD_Shader_Prototype
 yoloApp/yoloApp/bin/data
 python_scraper
 .idea
+.DS_Store
 
 # User-specific files
 *.suo
