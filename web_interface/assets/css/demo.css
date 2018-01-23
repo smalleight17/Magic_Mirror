@@ -36,12 +36,12 @@ table {
   color: white;
 }
 
-/*.gridster .gs-w {
-  background: #61A9CF;
+.gridster .gs-w {
+  background: #3b3b3c;
   cursor: pointer;
   -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-}*/
+}
 
 .gridster .player {
   -webkit-box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
