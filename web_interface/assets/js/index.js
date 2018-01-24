@@ -9,15 +9,16 @@ $(function () {         //equivalant for $(document).ready(function() { ... });
         widget_base_dimensions: [100, 100]
     }).data('gridster');
 
-    for (var i=0; i< 20; i++){
+    widgets.push(['<li><img src="assets/images/3.jpg" width=300></img></li>', 3, 5]);
+
+    for (var i=0; i< 30; i++){
       var gridX = Math.floor(Math.random() * 3) + 1;
       var gridY = Math.floor(Math.random() * 3) + 1;
       var unit = ['<li></li>', gridX, gridY];
       widgets.push(unit);
     }
-    widgets.push(['<li><img src="assets/images/3.jpg" width=300></img></li>', 3, 5]);
-    widgets.push(['<li><img src="assets/images/2.jpg" width=200></img></li>', 2, 4]);
-    widgets.push(['<li><img src="assets/images/1.jpg" width=200></img></li>', 2, 3]);
+    widgets.push(['<li><img src="assets/images/2.jpg" width=300></img></li>', 3, 6]);
+    widgets.push(['<li><img src="assets/images/1.jpg" width=300></img></li>', 3, 5]);
 
     $.each(widgets, function (i, widget) {
         gridster.add_widget.apply(gridster, widget)
@@ -44,7 +45,7 @@ function testOnClick(){
               clearInterval(poll);
             
               var ratio = newImg.height / newImg.width;
-              var new_width_unit = Math.floor(Math.random()* 2)+2;
+              var new_width_unit = Math.floor(Math.random()* 2)+ 3;
               var new_height_unit = Math.ceil(new_width_unit * ratio);
               var new_width = 100 * new_width_unit; 
               var new_height = 100 * new_height_unit;
@@ -67,28 +68,28 @@ function testOnClick(){
         var li_el = document.createElement('li');
 
         var shape;
-        // if(gridX > 1 && gridX == gridY){
-        //   shape = getSquareShape();
-        //   li_el.appendChild(shape);
-        // } else if(gridX > gridY){
-        //   if(Math.random() < 0.5){
-        //     shape = getHorizontalShape();
-        //     li_el.appendChild(shape);
-        //   }
-        // }else if(gridX < gridY){
-        //   if(gridY > 2){
-        //     shape = getVerticalShape();
-        //     li_el.appendChild(shape);
-        //   }   
-        // }
 
         if(gridX > 1 && gridY > 1){
-          shape = getSquareShape();
-          li_el.appendChild(shape);
-        }else if ( gridY > 2){
-          shape = getVerticalShape();
-          li_el.appendChild(shape);
+          if (gridX==3 && gridY == 3){
+            shape = getShape([8, 9]);
+          } else if (gridX == 3 && gridY == 2){
+            shape = getShape([0,2,3,4,5,6]);
+          }else{
+            shape = getShape([0,2,3,4]);
+          }
+        }else{
+          if(gridY == 3){
+            shape = getShape([7, 9]);
+          }else if (gridX == 3){
+            shape = getShape([5, 6, 11]); // 11 is not mapping to any animation
+          }else if ( gridX == 2){
+            shape = getShape([5, 11]);
+          }else if (gridX == 1 && gridY == 1){
+            shape = getShape([10, 11]);
+          }
         }
+        if(shape != null)
+          li_el.appendChild(shape);
         gridster.add_widget(li_el, gridX, gridY);
     }
 }
