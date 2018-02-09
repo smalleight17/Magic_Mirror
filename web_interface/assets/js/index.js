@@ -9,17 +9,21 @@ $(function () {         //equivalant for $(document).ready(function() { ... });
         widget_base_dimensions: [100, 100]
     }).data('gridster');
 
-    widgets.push(['<li><img src="assets/images/3.jpg" width=300></img></li>', 3, 5]);
-
+    
     for (var i=0; i< 30; i++){
+      if(i==9){
+        widgets.push(['<li><img src="assets/images/3.jpg" width=300></img></li>', 3, 5]);
+      }else if(i==19){
+         widgets.push(['<li><img src="assets/images/2.jpg" width=300></img></li>', 3, 6]);
+       }else if(i==29){
+         widgets.push(['<li><img src="assets/images/1.jpg" width=300></img></li>', 3, 5]);
+       }
       var gridX = Math.floor(Math.random() * 3) + 1;
       var gridY = Math.floor(Math.random() * 3) + 1;
       var unit = ['<li></li>', gridX, gridY];
       widgets.push(unit);
     }
-    widgets.push(['<li><img src="assets/images/2.jpg" width=300></img></li>', 3, 6]);
-    widgets.push(['<li><img src="assets/images/1.jpg" width=300></img></li>', 3, 5]);
-
+   
     $.each(widgets, function (i, widget) {
         gridster.add_widget.apply(gridster, widget)
     });
@@ -28,7 +32,7 @@ $(function () {         //equivalant for $(document).ready(function() { ... });
 function testOnClick(){
     gridster.remove_widget( $('.gridster li').eq(0));
  
-    if (count++ % 3 == 0){
+    if (count++ % 10 == 0){
         //add a new image
         imgIndex = (imgIndex++)%9+1;
        
