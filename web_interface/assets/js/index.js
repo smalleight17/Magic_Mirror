@@ -1,103 +1,80 @@
-var gridster;
-var widgets = [];
-var count = 11;
-var imgIndex = 3;
+// hide scrollbar
+$("body").css("overflow", "hidden");
 
-$(function () {         //equivalant for $(document).ready(function() { ... });
-    gridster = $(".gridster > ul").gridster({
-        widget_margins: [5, 5],
-        widget_base_dimensions: [100, 100]
-    }).data('gridster');
+$(document).click(function(){
 
-    
-    for (var i=0; i< 30; i++){
-      if(i==9){
-        widgets.push(['<li><img src="assets/images/3.jpg" width=300></img></li>', 3, 5]);
-      }else if(i==19){
-         widgets.push(['<li><img src="assets/images/2.jpg" width=300></img></li>', 3, 6]);
-       }else if(i==29){
-         widgets.push(['<li><img src="assets/images/1.jpg" width=300></img></li>', 3, 5]);
-       }
-      var gridX = Math.floor(Math.random() * 3) + 1;
-      var gridY = Math.floor(Math.random() * 3) + 1;
-      var unit = ['<li></li>', gridX, gridY];
-      widgets.push(unit);
-    }
-   
-    $.each(widgets, function (i, widget) {
-        gridster.add_widget.apply(gridster, widget)
-    });
+	circleWithTail(-600, 0, 200);
+	setTimeout(loadMotionGraphics, 5000);
 });
 
-function testOnClick(){
-    gridster.remove_widget( $('.gridster li').eq(0));
- 
-    if (count++ % 10 == 0){
-        //add a new image
-        imgIndex = (imgIndex++)%9+1;
-       
-        var newImg = document.createElement('img');
-        newImg.src= "assets/images/"+ imgIndex+".jpg";
-        //newImg.style.display = "block";
-        newImg.align = "middle";
 
 
-        //get image size before load
-        //to calculate the aspect ratio
-        var poll = setInterval(function () {
-            if (newImg.naturalWidth) {
-              clearInterval(poll);
-            
-              var ratio = newImg.height / newImg.width;
-              var new_width_unit = Math.floor(Math.random()* 2)+ 3;
-              var new_height_unit = Math.ceil(new_width_unit * ratio);
-              var new_width = 100 * new_width_unit; 
-              var new_height = 100 * new_height_unit;
-              newImg.width = new_width;
+function loadMotionGraphics(){
 
-              var li_el = document.createElement('li');
-              //var frame_el = getImgFrame(new_width, new_height);
-              //li_el.appendChild(frame_el);
-              li_el.appendChild(newImg);
+	dotMatrix(500,-450, 0, true);
+	dotMatrix(0,400, 6, true);
+	dotMatrix(-800,-200, 3, false);
+	
+	threeRect(-50,200);
+	twoSkewRect(-500, 400);
+	twoSkewRect(-540, 430);
+	
+	dotCross(500, 200);
+	
+	halfCircle(960,200,90);
+	twoHalfCircles(600, -300);
+	
+	rotatingCross(-400, -300);
+	
+	//need to change direction
+	lineAndDots();
+	sineWaveInit();
 
-              gridster.add_widget(li_el, new_width_unit, new_height_unit);
-              //console.log(li_el);
-            }
-        }, 10); 
+	//eraSVG();
+	loadImages();
 
-    }else{
-     //add a random size unit
-        var gridX = Math.floor(Math.random() * 3) + 1;
-        var gridY = Math.floor(Math.random() * 3) + 1;
-        var li_el = document.createElement('li');
-
-        var shape;
-
-        if(gridX > 1 && gridY > 1){
-          if (gridX==3 && gridY == 3){
-            shape = getShape([8, 9]);
-          } else if (gridX == 3 && gridY == 2){
-            shape = getShape([0,2,3,4,5,6]);
-          }else{
-            shape = getShape([0,2,3,4]);
-          }
-        }else{
-          if(gridY == 3){
-            shape = getShape([7, 9]);
-          }else if (gridX == 3){
-            shape = getShape([5, 6, 11]); // 11 is not mapping to any animation
-          }else if ( gridX == 2){
-            shape = getShape([5, 11]);
-          }else if (gridX == 1 && gridY == 1){
-            shape = getShape([10, 11]);
-          }
-        }
-        if(shape != null)
-          li_el.appendChild(shape);
-        gridster.add_widget(li_el, gridX, gridY);
-    }
 }
 
+function loadImages(){
+	// img #1
+	var newImg1 = document.createElement('img');
+	newImg1.src= "assets/images/1.jpg";
+	newImg1.width = 300;
+	newImg1.height = 300;
+	newImg1.style.position = "absolute";
+	newImg1.style.left = "800px";
+	newImg1.style.top = "150px";
+	newImg1.style.opacity = "0";
+	document.body.appendChild(newImg1);
 
-//$(document).click(testOnClick);
-setInterval(testOnClick, 1000);
+	// img #2
+	var newImg2 = document.createElement('img');
+	newImg2.src= "assets/images/2.jpg";
+	newImg2.style.position = "absolute";
+	newImg2.style.left = "1196px";
+	newImg2.style.top = "634px";
+	newImg2.style.opacity = "0";
+	document.body.appendChild(newImg2);
+
+	// img #3
+	var newImg3 = document.createElement('img');
+	newImg3.src= "assets/images/3.jpg";
+	newImg3.width = 560;
+	newImg3.style.position = "absolute";
+	newImg3.style.left = "650px";
+	newImg3.style.top = "600px";
+	newImg3.style.opacity = "0";
+	document.body.appendChild(newImg3);
+
+
+	var tl = new TimelineMax({repeat: -1, repeatDelay: 2});
+	tl.to(newImg1, 2, {opacity: 1},1)
+	  .to(newImg1, 2, {opacity: 0}, 10)
+	  .to(newImg2, 2, {opacity: 1}, 12)
+	  .to(newImg2, 2, {opacity: 0}, 22)
+	  .to(newImg3, 2, {opacity: 1}, 24)
+	  .to(newImg3, 2, {opacity: 0}, 34);
+
+	imgFrame(520,225, 560, 375);
+
+}
