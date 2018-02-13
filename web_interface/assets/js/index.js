@@ -2,79 +2,112 @@
 $("body").css("overflow", "hidden");
 
 $(document).click(function(){
-
+	
 	circleWithTail(-600, 0, 200);
 	setTimeout(loadMotionGraphics, 5000);
+	setInterval(loadImages, 12000);
 });
 
 
 
 function loadMotionGraphics(){
 
-	dotMatrix(500,-450, 0, true);
-	dotMatrix(0,400, 6, true);
-	dotMatrix(-800,-200, 3, false);
+	dotMatrix(1500, 150, 0, true);
+	dotMatrix(1000, 950, 6, true);
+	dotMatrix(200, 400, 3, false);
 	
-	threeRect(-50,200);
-	twoSkewRect(-500, 400);
-	twoSkewRect(-540, 430);
+	threeRect(800, 800);
+	twoSkewRect(300, 900);
+	twoSkewRect(260, 930);
 	
-	dotCross(500, 200);
+	dotCross(1500, 800);
 	
-	halfCircle(960,200,90);
-	twoHalfCircles(600, -300);
+	halfCircle(1900,800,90, false);
+	twoHalfCircles(1600, 250);
 	
-	rotatingCross(-400, -300);
+	rotatingCross(600, 300);
 	
 	//need to change direction
 	lineAndDots();
 	sineWaveInit();
 
-	//eraSVG();
-	loadImages();
-
+	eraSVG();
 }
 
+
+var imgIndex = 1;
+
 function loadImages(){
-	// img #1
-	var newImg1 = document.createElement('img');
-	newImg1.src= "assets/images/1.jpg";
-	newImg1.width = 300;
-	newImg1.height = 300;
-	newImg1.style.position = "absolute";
-	newImg1.style.left = "800px";
-	newImg1.style.top = "150px";
-	newImg1.style.opacity = "0";
-	document.body.appendChild(newImg1);
 
-	// img #2
-	var newImg2 = document.createElement('img');
-	newImg2.src= "assets/images/2.jpg";
-	newImg2.style.position = "absolute";
-	newImg2.style.left = "1196px";
-	newImg2.style.top = "634px";
-	newImg2.style.opacity = "0";
-	document.body.appendChild(newImg2);
+	var newImg = document.createElement('img');
+	newImg.src= "assets/images/" + imgIndex + ".jpg";
 
-	// img #3
-	var newImg3 = document.createElement('img');
-	newImg3.src= "assets/images/3.jpg";
-	newImg3.width = 560;
-	newImg3.style.position = "absolute";
-	newImg3.style.left = "650px";
-	newImg3.style.top = "600px";
-	newImg3.style.opacity = "0";
-	document.body.appendChild(newImg3);
+	newImg.style.position = "absolute";
+	newImg.style.opacity = "0";
+	document.body.appendChild(newImg);
+	
+	var left_pos, top_pos;
+	var newWidth, newHeight;
 
+    //get image size before load to calculate the aspect ratio
+    var poll = setInterval(function () {
+        if (newImg.naturalWidth) {
+        	clearInterval(poll);
+        	//console.log(imgIndex, newImg.naturalWidth, newImg.naturalHeight);
 
-	var tl = new TimelineMax({repeat: -1, repeatDelay: 2});
-	tl.to(newImg1, 2, {opacity: 1},1)
-	  .to(newImg1, 2, {opacity: 0}, 10)
-	  .to(newImg2, 2, {opacity: 1}, 12)
-	  .to(newImg2, 2, {opacity: 0}, 22)
-	  .to(newImg3, 2, {opacity: 1}, 24)
-	  .to(newImg3, 2, {opacity: 0}, 34);
+         	var ratio = newImg.height / newImg.width;
+         	var randomNum = Math.floor(Math.random() * 4);
+       
+         	switch(randomNum){
+         		case 0: 
+         			left_pos = 800;
+         			top_pos = 150;
+         			break;
 
-	imgFrame(520,225, 560, 375);
+         		case 1: 
+         			left_pos = 1200;
+         			top_pos = 150;
+         			break;
+
+         		case 2: 
+         			left_pos = 800;
+         			top_pos = 600;
+         			break;
+         		
+         		case 3: 
+         			left_pos = 1200;
+         			top_pos = 600;
+         			break;
+
+         		default: break;
+
+         	}
+
+         	if((randomNum == 2 || randomNum == 3) && ratio >1){
+         		newWidth = 300;
+         		newImg.width = newWidth;
+         		newHeight = 300 * ratio;
+         	}else{
+         		newHeight = 300;
+         		newWidth = newHeight / ratio;
+				newImg.height = newHeight;
+         	}
+
+            newImg.style.left = left_pos + "px";
+			newImg.style.top = top_pos + "px";
+        	
+        	var tl = new TimelineMax({onComplete: function(){
+				document.body.removeChild(newImg);
+			}});
+			tl.to(newImg, 2, {opacity: 1},0)
+	  		.to(newImg, 2, {opacity: 0}, 10)
+	
+			getImgFrame(left_pos,top_pos, newWidth, newHeight);
+
+        }
+    }, 10); 
+
+	imgIndex++;
+	if (imgIndex == 12) imgIndex = 1;
 
 }

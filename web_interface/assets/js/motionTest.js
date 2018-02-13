@@ -55,8 +55,10 @@ function dotMatrix(pos_x, pos_y, time_diff, explode){
       shape: 'circle',
       radius: 3,
       fill: 'white',
-      x: dotsArr[j].origPosX,
-      y: dotsArr[j].origPosY,
+      left: dotsArr[j].origPosX,
+      top: dotsArr[j].origPosY,
+      //x: dotsArr[j].origPosX,
+      //y: dotsArr[j].origPosY,
       delay: dotsArr[j].delay,
       opacity: 0,
       isShowStart: true
@@ -101,8 +103,8 @@ function threeRect(pos_x, pos_y){
       shape: 'rect',
       radiusX: 40,
       radiusY: 8,
-      x: pos_x,
-      y: pos_y -35,
+      left: pos_x,
+      top: pos_y - 35,
       fill: 'white',
       isShowStart: true
   });
@@ -111,8 +113,8 @@ function threeRect(pos_x, pos_y){
       shape: 'rect',
       radiusX: 40,
       radiusY: 8,
-      x: pos_x,
-      y: pos_y,
+      left: pos_x,
+      top: pos_y,
       fill: 'white',
       isShowStart: true
   });
@@ -121,8 +123,8 @@ function threeRect(pos_x, pos_y){
       shape: 'rect',
       radiusX: 40,
       radiusY: 8,
-      x: pos_x,
-      y: pos_y + 35,
+      left: pos_x,
+      top: pos_y + 35,
       fill: 'white',
       isShowStart: true
   });
@@ -138,7 +140,7 @@ function threeRect(pos_x, pos_y){
 
 /************************** #3 half circle *************************************/
 
-function halfCircle(pos_x, pos_y, rotation){
+function halfCircle(pos_x, pos_y, rotation, remove){
   var circle1 = new mojs.Shape({
     shape:        'circle',
     fill:         'none',
@@ -148,8 +150,8 @@ function halfCircle(pos_x, pos_y, rotation){
     strokeDasharray: '100%',
     strokeDashoffset: '-100%',
     angle:        180 + rotation,  
-    x: pos_x,
-    y: pos_y,
+    left: pos_x,
+    top: pos_y,
     isShowStart:  true,
   });
   
@@ -163,8 +165,8 @@ function halfCircle(pos_x, pos_y, rotation){
     strokeDashoffset: '50%',
     angle: rotation,
     opacity: 0,
-    x: pos_x,
-    y: pos_y,
+    left: pos_x,
+    top: pos_y,
     isShowStart:  true,
   
   });
@@ -172,11 +174,25 @@ function halfCircle(pos_x, pos_y, rotation){
   var circle1SVG = circle1.el.childNodes[0].childNodes[0];
   var circle2SVG = circle2.el.childNodes[0].childNodes[0];
   
-  var tl = new TimelineMax({repeat: -1, repeatDelay: 8});
-  tl.to(circle1SVG, 1, {strokeDashoffset: -314.1592653589793})
+  if (remove){
+    var tl = new TimelineMax({onComplete: function(){
+      document.body.removeChild(circle1.el);
+      document.body.removeChild(circle2.el);
+    }});
+
+    tl.to(circle1SVG, 1, {strokeDashoffset: -314.1592653589793})
     .to(circle2.el, 1, {opacity: 1}, 2)
     .to(circle1.el, 1, {opacity: 0}, 3)
     .to(circle2SVG, 1, {strokeDashoffset: 628.3185307179587}, 9);
+
+  }else{
+    var tl = new TimelineMax({repeat: -1, repeatDelay: 8});
+    tl.to(circle1SVG, 1, {strokeDashoffset: -314.1592653589793})
+    .to(circle2.el, 1, {opacity: 1}, 2)
+    .to(circle1.el, 1, {opacity: 0}, 3)
+    .to(circle2SVG, 1, {strokeDashoffset: 628.3185307179587}, 9);
+  }
+
 
 }
 
@@ -191,8 +207,10 @@ function twoSkewRect(pos_x, pos_y){
     radius:         15,
     radiusY:      40,
     opacity: 0,
-    x: pos_x,
-    y: pos_y,
+    left: pos_x,
+    top: pos_y,
+    //x: pos_x,
+    //y: pos_y,
     isShowStart: true
   });
   
@@ -202,8 +220,10 @@ function twoSkewRect(pos_x, pos_y){
     radius:         15,
     radiusY:      40,
     opacity: 0,
-    x: pos_x,
-    y: pos_y,
+    left: pos_x,
+    top: pos_y,
+    //x: pos_x,
+    //y: pos_y,
     isShowStart: true
   });
     
@@ -230,8 +250,10 @@ function twoHalfCircles(pos_x, pos_y){
    stroke: 'white',
    strokeWidth: 12,
    radius: 45,
-   x: pos_x - 70,
-   y: pos_y,
+   left: pos_x - 70,
+   top: pos_y,
+   //x: pos_x - 70,
+   //y: pos_y,
    strokeDasharray: '100%',
    strokeDashoffset: '50%',
    isShowStart: true
@@ -243,8 +265,10 @@ function twoHalfCircles(pos_x, pos_y){
    stroke: 'white',
    strokeWidth: 12,
    radius: 45,
-   x: pos_x + 70,
-   y: pos_y,
+   left: pos_x + 70,
+   top: pos_y,
+   //x: pos_x + 70,
+   //y: pos_y,
    strokeDasharray: '100%',
    strokeDashoffset: '50%',
    angle: 90,
@@ -268,10 +292,9 @@ function lineAndDots(){
           fill:           'white',
           radiusX:        1,
           radiusY:      200, 
-          x: 400,
-          y: -300,
+          left: 780,
+          top : 300,
           opacity: 0,
-          left:         '20%',
           duration:       1000,
           isShowStart: true
         });
@@ -339,8 +362,8 @@ function dotCross(pos_x, pos_y){
     fill:           'white',
     radiusX:        40, 
     radiusY:        10,
-    x: pos_x,
-    y: pos_y,
+    left: pos_x,
+    top: pos_y,
     isShowStart: true
   });
   
@@ -349,8 +372,8 @@ function dotCross(pos_x, pos_y){
     fill:           'white',
     radiusX:        10,
     radiusY:        40,
-    x: pos_x,
-    y: pos_y,
+    left: pos_x,
+    top: pos_y,
     isShowStart: true
   });
   
@@ -377,8 +400,10 @@ function rotatingCross(pos_x, pos_y){
     fill:           'white',
     radiusX:        40, 
     radiusY:        10,
-    x: pos_x,
-    y: pos_y,
+    left: pos_x,
+    top: pos_y,
+    //x: pos_x,
+    //y: pos_y,
     isShowStart: true
   });
   
@@ -387,8 +412,10 @@ function rotatingCross(pos_x, pos_y){
     fill:           'white',
     radiusX:        10,
     radiusY:        40,
-    x: pos_x,
-    y: pos_y,
+    left: pos_x,
+    top: pos_y,
+    //x: pos_x,
+    //y: pos_y,
     isShowStart: true
   });
   
@@ -501,19 +528,6 @@ function sineWave(){
   if (canvas.getContext) {
     var ctx = canvas.getContext("2d");
 
-
-  // var y = Math.sin(x*Math.PI/90);
-  // y = y * 30 + 100;
-  // ctx.fillStyle = "white";  
-  // ctx.fillRect(x, y, 5 , 18);
-
-  // var x_delay = x- 150;
-  // var y_delay = Math.sin(x_delay * Math.PI/90);
-  // y_delay = y_delay * 30 + 100;
-  // ctx.fillStyle = "black";  
-  // ctx.fillRect(x_delay, y_delay-1, 5 , 20);
-  //x+=0.6;
-
   var x = Math.sin(y * Math.PI/90);
   x = x * 30 + 100;
   ctx.fillStyle = "white";  
@@ -539,22 +553,38 @@ function eraSVG(){
 
   var nine = document.getElementById("nine");
   var zero = document.getElementById("zero");
+  var layer1 = document.getElementById("Layer_1");
 
-   var tl = new TimelineMax({repeat: -1, repeatDelay: 6, yoyo: true});
-   tl.to(nine, 3, {strokeDashoffset: 500, ease: Sine.easeInOut},0)
-     .to(zero, 3, {strokeDashoffset: 500, ease: Sine.easeInOut}, 0)
+  //console.log(zero.getTotalLength())
+  TweenMax.to(layer1, 1, {opacity: 1 });
+  var tl = new TimelineMax({repeat: -1, repeatDelay: 6, yoyo: true});
+  tl.to(nine, 3, {strokeDashoffset: 1500, ease: Sine.easeInOut},0)
+    .to(zero, 3, {strokeDashoffset: 1500, ease: Sine.easeInOut}, 0);
+}
+
+/************************** image frame *************************************/
+
+function getImgFrame(pos_x, pos_y, imgWidth, imgHeight){
+
+  var randomNum = Math.floor(Math.random() * 3);
+  if (randomNum == 0)
+    imgFrame1(pos_x, pos_y, imgWidth, imgHeight);
+  else if (randomNum == 1){
+    imgFrame2(pos_x, pos_y, imgWidth, imgHeight);
+    halfCircle(pos_x+imgWidth- 50, pos_y + imgHeight, 0, true);
+  }
+
 }
 
 
-/************************** image frame *************************************/
-function imgFrame(pos_x, pos_y, imgWidth, imgHeight){
+function imgFrame1(pos_x, pos_y, imgWidth, imgHeight){
   var left = new mojs.Shape({
       shape: 'rect',
       fill: 'white',
       radiusX: 4,
       radiusY: 4,
-      x: pos_x -1 * imgWidth/2,
-      y: pos_y -1 * imgHeight/2,
+      left: pos_x - 4, 
+      top: pos_y - 4,
       isShowStart: true
   });
 
@@ -563,8 +593,8 @@ function imgFrame(pos_x, pos_y, imgWidth, imgHeight){
       fill: 'white',
       radiusX: 4,
       radiusY: 4,
-      x: pos_x -1 * imgWidth/2,
-      y: pos_y -1 * imgHeight/2,
+      left: pos_x - 4, 
+      top: pos_y - 4,
       isShowStart: true
   });
 
@@ -573,8 +603,8 @@ function imgFrame(pos_x, pos_y, imgWidth, imgHeight){
       fill: 'white',
       radiusX: 4,
       radiusY: 4,
-      x: pos_x + imgWidth/2 - 8,
-      y: pos_y + imgHeight/2 - 8,
+      left: pos_x + imgWidth + 4, 
+      top: pos_y + imgHeight + 4,
       isShowStart: true
   });
 
@@ -583,8 +613,8 @@ function imgFrame(pos_x, pos_y, imgWidth, imgHeight){
       fill: 'white',
       radiusX: 4,
       radiusY: 4,
-      x: pos_x + imgWidth/2 - 8,
-      y: pos_y + imgHeight/2 -8,
+      left: pos_x + imgWidth + 4, 
+      top: pos_y + imgHeight + 4,
       isShowStart: true
   });
   var leftSVG = left.el.childNodes[0].childNodes[0];
@@ -592,11 +622,77 @@ function imgFrame(pos_x, pos_y, imgWidth, imgHeight){
   var rightSVG = right.el.childNodes[0].childNodes[0];
   var bottomSVG = bottom.el.childNodes[0].childNodes[0];
 
-  var tl = new TimelineMax({delay: 12, repeat: -1, repeatDelay: 26});
-  tl.to([left.el, leftSVG], 2, {height: imgHeight}, 0)
-    .to([top.el, topSVG], 2, {width: imgWidth}, 0)
-    .to([right.el, rightSVG], 2, {height: imgHeight, top:"-=367"}, 0)
-    .to([bottom.el, bottomSVG], 2, {width: imgWidth, left:"-=552"}, 0)
+  var tl = new TimelineMax({onComplete: function(){
+    document.body.removeChild(left.el);
+    document.body.removeChild(right.el);
+    document.body.removeChild(top.el);
+    document.body.removeChild(bottom.el);
+  }});
+
+  tl.to([left.el, leftSVG], 2, {height: imgHeight + 16}, 0)
+    .to([top.el, topSVG], 2, {width: imgWidth+16}, 0)
+    .to([right.el, rightSVG], 2, {height: imgHeight+16, top:"-=" + (imgHeight+8)}, 0)
+    .to([bottom.el, bottomSVG], 2, {width: imgWidth+16, left:"-=" + (imgWidth+8)}, 0)
     .to([left.el, top.el, right.el, bottom.el], 2 ,{opacity: 0}, 10);
+
+}
+
+function imgFrame2(pos_x, pos_y, imgWidth, imgHeight){
+  var left = new mojs.Shape({
+        shape: 'rect',
+        fill: 'white',
+        radiusX: 4,
+        radiusY: 4,
+        left: pos_x - 4, 
+        top: pos_y - 4,
+        isShowStart: true
+    });
+  
+    var top = new mojs.Shape({
+        shape: 'rect',
+        fill: 'white',
+        radiusX: 4,
+        radiusY: 4,
+        left: pos_x + imgWidth + 4, 
+        top: pos_y - 4,
+        isShowStart: true
+    });
+  
+    var right = new mojs.Shape({
+        shape: 'rect',
+        fill: 'white',
+        radiusX: 4,
+        radiusY: 4,
+        left: pos_x + imgWidth + 4, 
+        top: pos_y + imgHeight + 4,
+        isShowStart: true
+    });
+  
+    var bottom = new mojs.Shape({
+        shape: 'rect',
+        fill: 'white',
+        radiusX: 4,
+        radiusY: 4,
+        left: pos_x - 4, 
+        top: pos_y + imgHeight + 4,
+        isShowStart: true
+    });
+    var leftSVG = left.el.childNodes[0].childNodes[0];
+    var topSVG = top.el.childNodes[0].childNodes[0];
+    var rightSVG = right.el.childNodes[0].childNodes[0];
+    var bottomSVG = bottom.el.childNodes[0].childNodes[0];
+  
+    var tl = new TimelineMax({onComplete: function(){
+      document.body.removeChild(left.el);
+      document.body.removeChild(right.el);
+      document.body.removeChild(top.el);
+      document.body.removeChild(bottom.el);
+    }});
+
+    tl.to([left.el, leftSVG], 2, {height: imgHeight + 16}, 0)
+      .to([top.el, topSVG], 2, {width: imgWidth+16, left:"-=" + (imgWidth+8)}, 0)
+      .to([right.el, rightSVG], 2, {height: imgHeight+16, top:"-=" + (imgHeight+8)}, 0)
+      .to([bottom.el, bottomSVG], 2, {width: imgWidth+16, }, 0)
+      .to([left.el, top.el, right.el, bottom.el], 2 ,{opacity: 0}, 10);
 
 }
