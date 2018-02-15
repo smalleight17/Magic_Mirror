@@ -40,7 +40,7 @@ var imgIndex = 1;
 function loadImages(){
 
 	var newImg = document.createElement('img');
-	newImg.src= "assets/images/" + imgIndex + ".jpg";
+	newImg.src= "90s/" + imgIndex + ".jpg";
 
 	newImg.style.position = "absolute";
 	newImg.style.opacity = "0";
@@ -56,42 +56,49 @@ function loadImages(){
         	//console.log(imgIndex, newImg.naturalWidth, newImg.naturalHeight);
 
          	var ratio = newImg.height / newImg.width;
-         	var randomNum = Math.floor(Math.random() * 4);
+         	var randomNum;
+
+         	if (ratio < 0.66)		//horizontally long image
+         		randomNum = Math.random() < 0.5 ? 0: 2;
+         	else					//otherwise randomly choose position
+         		randomNum = Math.floor(Math.random() * 4);
        
          	switch(randomNum){
          		case 0: 
          			left_pos = 800;
-         			top_pos = 150;
+         			top_pos = 80;
          			break;
 
          		case 1: 
          			left_pos = 1200;
-         			top_pos = 150;
+         			top_pos = 80;
          			break;
 
          		case 2: 
          			left_pos = 800;
-         			top_pos = 600;
+         			top_pos = 550;
          			break;
          		
          		case 3: 
          			left_pos = 1200;
-         			top_pos = 600;
+         			top_pos = 550;
          			break;
 
          		default: break;
 
          	}
 
-         	if((randomNum == 2 || randomNum == 3) && ratio >1){
-         		newWidth = 300;
-         		newImg.width = newWidth;
-         		newHeight = 300 * ratio;
-         	}else{
-         		newHeight = 300;
+         	// if((randomNum == 2 || randomNum == 3) && ratio >1){
+         	// 	newWidth = 300;
+         	// 	newImg.width = newWidth;
+         	// 	newHeight = 300 * ratio;
+         	// }else{
+         	
+         		newHeight = 400;
          		newWidth = newHeight / ratio;
 				newImg.height = newHeight;
-         	}
+         	
+         	//}
 
             newImg.style.left = left_pos + "px";
 			newImg.style.top = top_pos + "px";
@@ -108,6 +115,6 @@ function loadImages(){
     }, 10); 
 
 	imgIndex++;
-	if (imgIndex == 12) imgIndex = 1;
+	if (imgIndex == 150) imgIndex = 1;
 
 }
