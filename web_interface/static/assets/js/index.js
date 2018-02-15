@@ -1,17 +1,27 @@
 // hide scrollbar
 $("body").css("overflow", "hidden");
 
-$(document).click(function(){
-	
-	circleWithTail(-600, 0, 200);
-	setTimeout(loadMotionGraphics, 5000);
-	setInterval(loadImages, 12000);
+var folder;
+
+var socket = io.connect('http://' + document.domain + ':' + location.port);
+socket.on('connect', function() {
+    console.log("SocketIO: Connected");
+    socket.emit('client_response');
 });
 
+socket.on('start_animation', function(msg){
+    console.log("start animation.", msg);
+    folder = msg;
+    circleWithTail(-600, 0, 200);
+    setTimeout(loadMotionGraphics, 5000);
+    setInterval(loadImages, 12000);
+});
 
+socket.on('stop_animation', function(){
+    // fade out???
+});
 
 function loadMotionGraphics(){
-
 	dotMatrix(1500, 150, 0, true);
 	dotMatrix(1000, 950, 6, true);
 	dotMatrix(200, 400, 3, false);
@@ -35,12 +45,12 @@ function loadMotionGraphics(){
 }
 
 
-var imgIndex = 1;
+var imgIndex = 0;
 
 function loadImages(){
 
 	var newImg = document.createElement('img');
-	newImg.src= "90s/" + imgIndex + ".jpg";
+	newImg.src= folder + "/" + imgIndex + ".jpg";
 
 	newImg.style.position = "absolute";
 	newImg.style.opacity = "0";
@@ -87,18 +97,11 @@ function loadImages(){
          		default: break;
 
          	}
-
-         	// if((randomNum == 2 || randomNum == 3) && ratio >1){
-         	// 	newWidth = 300;
-         	// 	newImg.width = newWidth;
-         	// 	newHeight = 300 * ratio;
-         	// }else{
+         	newHeight = 400;
+         	newWidth = newHeight / ratio;
+			newImg.height = newHeight;
          	
-         		newHeight = 400;
-         		newWidth = newHeight / ratio;
-				newImg.height = newHeight;
-         	
-         	//}
+         }
 
             newImg.style.left = left_pos + "px";
 			newImg.style.top = top_pos + "px";
@@ -111,10 +114,9 @@ function loadImages(){
 	
 			getImgFrame(left_pos,top_pos, newWidth, newHeight);
 
-        }
     }, 10); 
 
 	imgIndex++;
-	if (imgIndex == 150) imgIndex = 1;
+	if (imgIndex == 150) imgIndex = 0;
 
 }

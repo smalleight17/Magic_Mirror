@@ -7,25 +7,32 @@ import os
 import http.client
 from urllib.request import urlopen, Request
 from urllib.error import HTTPError, URLError
-
+from flask_socketio import SocketIO, send, emit
 
 # global variables
 index = 0
-era = '90s'
+era = '70s'
 keyword_list = ['entertainment', 'fashion', 'toys', 'culture', 'style', 'games', 'music', 'celebrity']
 #search_keyword = ''
 items = []
 
 app = Flask(__name__, static_url_path = '')
+socketio = SocketIO(app)
 
 def run_app():
     print ('server is up running!')
-    app.run()
+    socketio.run(app)      #app.run()
+    emit('connect')
 
 @app.route('/')
 def index_page():
 	return app.send_static_file('index.html')
 
+#when getting response from client ask it to start animation
+@socketio.on('client_response')
+def handle_message():
+    print('get response from client ')
+    emit('start_animation', era)
 
 # Downloading entire Web Document (Raw Page Content)
 def download_page(url):
