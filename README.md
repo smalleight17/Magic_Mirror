@@ -4,6 +4,7 @@ Magic Mirror uses Yolo real-time object detection, shader and transparent LCD. W
 ## Video
 
 ## Yolo App
+I'm doing this on Windows and would recommend Visual Studio 2015 because ofxDarknet is using CUDA 8.0 and there's no official announce that it supports VS 2017.
 
 ### Dependencies
 * ofxDarknet
