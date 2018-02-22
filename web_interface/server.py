@@ -8,31 +8,27 @@ import http.client
 from urllib.request import urlopen, Request
 from urllib.error import HTTPError, URLError
 from flask_socketio import SocketIO, send, emit
+from pythonosc import dispatcher, osc_server, udp_client
+import queue
 
 # global variables
 index = 0
 era = '70s'
 keyword_list = ['entertainment', 'fashion', 'toys', 'culture', 'style', 'games', 'music', 'celebrity']
-#search_keyword = ''
 items = []
+msg_queue = queue.Queue()
 
-app = Flask(__name__, static_url_path = '')
+app = Flask(__name__, static_url_path='')
 socketio = SocketIO(app)
 
 def run_app():
-    print ('server is up running!')
-    socketio.run(app)      #app.run()
-    emit('connect')
+    print ('flask server is up running on port 5000!')
+    socketio.run(app)      #this wraps app.run()
 
 @app.route('/')
 def index_page():
 	return app.send_static_file('index.html')
 
-#when getting response from client ask it to start animation
-@socketio.on('client_response')
-def handle_message():
-    print('get response from client ')
-    emit('start_animation', era)
 
 # Downloading entire Web Document (Raw Page Content)
 def download_page(url):
@@ -104,7 +100,7 @@ def _images_get_all_items(page):
 
 
 
-def download_image(k, url):
+def get_image_data(k, url):
 
     try:
         req = Request(url, headers={
@@ -146,13 +142,13 @@ def write_image_file(future):
         #print("Callback function", index, "error")
         pass
 
-async def main():
+async def spawn_threads():
     loop = asyncio.get_event_loop()
 
     k = 0
     future_list = []
     while k < len(items):
-        future = loop.run_in_executor(None, download_image, k, items[k])
+        future = loop.run_in_executor(None, get_image_data, k, items[k])
         future.add_done_callback(write_image_file)
         future_list.append(future)
         k = k + 1
@@ -188,20 +184,40 @@ def start_download(args):
     t0 = time.time()
 
     loop = asyncio.get_event_loop()
-    loop.run_until_complete(main())
+    loop.run_until_complete(spawn_threads())
 
     t1 = time.time()
     print("Total time taken: ", t1 - t0, "\n")
 
+def test_start(unused_addr, args, volume):
+    print ('test start')
+
+    # use socketio.emit() instead of emit()
+    # because we're calling socketio in another thread
+    # emit() is context-aware
+    socketio.emit('start_animation', era)
+
+    for i in range(len(keyword_list)):
+         start_download(era+"_"+keyword_list[i])
+
+def test_stop(unused_addr):
+    print ('test stop')
+
 
 if __name__ == "__main__":
 
-    # start a new thread for serving webpage
+    # start a new thread for flask serving web page
     threads = []
-    t = threading.Thread(target = run_app)
-    threads.append(t)
-    t.start()
+    flask_thread = threading.Thread(target = run_app)
+    threads.append(flask_thread)
+    flask_thread.start()
 
-    # download images based on keywords
-    for i in range(len(keyword_list)):
-        start_download(era+"_"+keyword_list[i])
+    # main thread
+    osc_dispatcher = dispatcher.Dispatcher()
+    osc_dispatcher.map("/start_animation", test_start)
+    osc_dispatcher.map("/stop_animation", test_stop)
+
+    server = osc_server.OSCUDPServer(('127.0.0.1', 3000), osc_dispatcher)
+    print("OSC server listening on {}".format(server.server_address))
+    server.serve_forever()
+

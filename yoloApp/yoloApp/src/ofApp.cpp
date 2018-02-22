@@ -107,17 +107,17 @@ void ofApp::draw()
 void ofApp::osc_sendMsg(string object, float pos_x) {
 	ofxOscMessage m;
 	if (object == "stop") {
-		m.setAddress("/stop_shader");
+		m.setAddress("/stop_animation");
 		load_shader = false;
-		cout << "stop shader\t" + ofToString(ofGetFrameNum()) << endl;
+		cout << "stop animation\t" + ofToString(ofGetFrameNum()) << endl;
 
 	}
 	else {
-		m.setAddress("/start_shader");
+		m.setAddress("/start_animation");
 		m.addStringArg(object);
 		m.addFloatArg(pos_x);
 		load_shader = true;
-		cout << "start shader: " << object << "\t" + ofToString(ofGetFrameNum()) << endl;
+		cout << "start animation: " << object << "\t" + ofToString(ofGetFrameNum()) << endl;
 	}
 	sender.sendMessage(m);
 
@@ -137,8 +137,8 @@ void ofApp::keyPressed(int key){
 	}
 	if (key == 's') {
 		ofxOscMessage m;
-		m.setAddress("/stop_shader");
+		m.setAddress("/stop_animation");
 		sender.sendMessage(m);
-		cout << "stop shader\t" + ofToString(ofGetFrameNum()) << endl;
+		cout << "stop animation\t" + ofToString(ofGetFrameNum()) << endl;
 	}
 }

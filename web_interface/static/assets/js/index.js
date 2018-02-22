@@ -6,7 +6,7 @@ var folder;
 var socket = io.connect('http://' + document.domain + ':' + location.port);
 socket.on('connect', function() {
     console.log("SocketIO: Connected");
-    socket.emit('client_response');
+    //socket.emit('client_response');
 });
 
 socket.on('start_animation', function(msg){
