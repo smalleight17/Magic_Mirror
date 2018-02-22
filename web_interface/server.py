@@ -9,14 +9,12 @@ from urllib.request import urlopen, Request
 from urllib.error import HTTPError, URLError
 from flask_socketio import SocketIO, send, emit
 from pythonosc import dispatcher, osc_server, udp_client
-import queue
 
 # global variables
 index = 0
-era = '70s'
+era = ''
 keyword_list = ['entertainment', 'fashion', 'toys', 'culture', 'style', 'games', 'music', 'celebrity']
 items = []
-msg_queue = queue.Queue()
 
 app = Flask(__name__, static_url_path='')
 socketio = SocketIO(app)
@@ -190,7 +188,16 @@ def start_download(args):
     print("Total time taken: ", t1 - t0, "\n")
 
 def test_start(unused_addr, args, volume):
-    print ('test start')
+    print ('test start', args)
+
+    global era, index
+    index = 0
+    if (args == 'ALADDIN\'S_LAMP'):
+        era = '70s'
+    if (args == 'MY_PIGGY_BANK'):
+        era = '60s'
+    if (args == 'MY_AIRPLANE'):
+        era = '50s'
 
     # use socketio.emit() instead of emit()
     # because we're calling socketio in another thread

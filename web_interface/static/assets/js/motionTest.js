@@ -57,8 +57,6 @@ function dotMatrix(pos_x, pos_y, time_diff, explode){
       fill: 'white',
       left: dotsArr[j].origPosX,
       top: dotsArr[j].origPosY,
-      //x: dotsArr[j].origPosX,
-      //y: dotsArr[j].origPosY,
       delay: dotsArr[j].delay,
       opacity: 0,
       isShowStart: true
@@ -209,8 +207,6 @@ function twoSkewRect(pos_x, pos_y){
     opacity: 0,
     left: pos_x,
     top: pos_y,
-    //x: pos_x,
-    //y: pos_y,
     isShowStart: true
   });
   
@@ -222,8 +218,6 @@ function twoSkewRect(pos_x, pos_y){
     opacity: 0,
     left: pos_x,
     top: pos_y,
-    //x: pos_x,
-    //y: pos_y,
     isShowStart: true
   });
     
@@ -252,8 +246,6 @@ function twoHalfCircles(pos_x, pos_y){
    radius: 45,
    left: pos_x - 70,
    top: pos_y,
-   //x: pos_x - 70,
-   //y: pos_y,
    strokeDasharray: '100%',
    strokeDashoffset: '50%',
    isShowStart: true
@@ -267,8 +259,6 @@ function twoHalfCircles(pos_x, pos_y){
    radius: 45,
    left: pos_x + 70,
    top: pos_y,
-   //x: pos_x + 70,
-   //y: pos_y,
    strokeDasharray: '100%',
    strokeDashoffset: '50%',
    angle: 90,
@@ -402,8 +392,6 @@ function rotatingCross(pos_x, pos_y){
     radiusY:        10,
     left: pos_x,
     top: pos_y,
-    //x: pos_x,
-    //y: pos_y,
     isShowStart: true
   });
   
@@ -414,8 +402,6 @@ function rotatingCross(pos_x, pos_y){
     radiusY:        40,
     left: pos_x,
     top: pos_y,
-    //x: pos_x,
-    //y: pos_y,
     isShowStart: true
   });
   
@@ -435,8 +421,8 @@ function circleWithTail(pos_x, pos_y, size){
   var arc_in = new mojs.Shape({
     shape: 'circle',
     fill: 'none',
-    x: pos_x,
-    y: pos_y,
+    left: pos_x,
+    top: pos_y,
     radius: size + 20,
     stroke: 'white',
     strokeWidth: 2,
@@ -457,8 +443,8 @@ function circleWithTail(pos_x, pos_y, size){
   var arc_out = new mojs.Shape({
     shape: 'circle',
     fill: 'none',
-    x: pos_x,
-    y: pos_y,
+    left: pos_x,
+    top: pos_y,
     radius: size + 40,
     stroke: 'white',
     strokeWidth: 2,
@@ -480,8 +466,8 @@ function circleWithTail(pos_x, pos_y, size){
   var circle = new mojs.Shape({
     shape: 'circle',
     fill: 'white',
-    x : pos_x,
-    y : pos_y, 
+    left: pos_x,
+    top: pos_y,
     radius: size,
     stroke: 'white',
     strokeWidth: 2,

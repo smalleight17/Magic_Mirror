@@ -12,13 +12,13 @@ socket.on('connect', function() {
 socket.on('start_animation', function(msg){
     console.log("start animation.", msg);
     folder = msg;
-    circleWithTail(-600, 0, 200);
+    circleWithTail (300, 600, 200);
     setTimeout(loadMotionGraphics, 5000);
     setInterval(loadImages, 12000);
 });
 
 socket.on('stop_animation', function(){
-    // fade out???
+    console.log("stop animation");
 });
 
 function loadMotionGraphics(){
